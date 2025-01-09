@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:14  # Use the latest official PostgreSQL image
+    container_name: db_postgres_service  # Name of the container
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}  # Name of the database
+      POSTGRES_USER: ${POSTGRES_USER}  # Database user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Password for the user
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+
+  rabbitmq:
+    container_name: rabbitmq-server
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"   # AMQP protocol port for communication
+      - "15672:15672" # HTTP management plugin port for monitoring RabbitMQ
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # Persistence volume
+    networks:
+      - rabbitmq_network
+
+volumes:
+  db_data:
+  rabbitmq_data:
+
+networks:
+  rabbitmq_network:
+    driver: bridge

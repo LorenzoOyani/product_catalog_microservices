@@ -1,0 +1,22 @@
+
+services:
+  db:
+    image: postgres:14  # Use the latest official PostgreSQL image
+    container_name: db_postgres2  # Name of the container
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}  # Name of the database
+      POSTGRES_USER: ${POSTGRES_USER}  # Database user (corrected the key from POSTGRES_USERNAME to POSTGRES_USER)
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Password for the user
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+
+
+
+
+volumes:
+  db_data:
