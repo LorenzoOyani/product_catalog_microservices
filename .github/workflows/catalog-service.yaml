@@ -38,6 +38,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
+      - name: Ensure mvnw is executable
+        run: chmod +x mvnw
+
       # Step 4: Run code formatting checks
       - name: Lint with Spotless
         run: ./mvnw spotless:check
@@ -45,10 +48,6 @@ jobs:
       # Step 5: Build the project and run tests
       - name: Build and Test
         run: ./mvnw clean verify
-
-      # Ensure mvnw has execute permissions
-      - name: Make mvnw executable
-        run: chmod +x ./mvnw
 
 
       # Step 6: Upload test results for visibility
