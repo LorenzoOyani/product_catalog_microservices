@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -37,6 +39,20 @@ public class ProductEntity {
     @DecimalMin(value = "0.1")
     @Column(nullable = false)
     private BigDecimal price;
+
+    // Additional Constructor (excluding id)
+    public ProductEntity(String code, String description, String name, String imageUrl, BigDecimal price) {
+        this.code = code;
+        this.description = description;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.price = price;
+    }
+
+    public ProductEntity() {
+
+    }
+
 
     // Getters and Setters
     public Long getId() {

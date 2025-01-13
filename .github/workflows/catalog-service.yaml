@@ -1,0 +1,59 @@
+name: catalog-service
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./catalog-service
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # Use OpenJDK via Eclipse Temurin distribution
+          java-version: '21'
+          cache: 'maven'
+
+      # Step 3: Cache Maven dependencies for faster builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
+
+      # Step 4: Run "Spotless" for code formatting checks
+      - name: Lint with Spotless
+        run: mvn spotless:check
+
+      # Step 5: Build the project and run tests using Testcontainers
+      - name: Build and Test
+        run: mvn clean verify
+
+      # Step 6: Upload test results for visibility
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results
+          path: target/surefire-reports/*.xml
+
+
+      - name: Build with maven
+        run: ./mvnw -ntp verify
+

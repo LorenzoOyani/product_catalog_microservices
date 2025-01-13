@@ -1,3 +1,5 @@
+DELETE FROM products;
+
 -- Insert dummy data into the products table
 INSERT INTO products (code, name, description, image_url, price)
 VALUES ('P001', 'Laptop', 'A high-performance laptop for professional use', 'https://example.com/laptop.jpg', 1200.00),
@@ -15,3 +17,4 @@ VALUES ('P001', 'Laptop', 'A high-performance laptop for professional use', 'htt
        ('P010', 'Keyboard', 'Mechanical keyboard with customizable keys', 'https://example.com/keyboard.jpg', 120.00);
 
 
+select count(*) from products;

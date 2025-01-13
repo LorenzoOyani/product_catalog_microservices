@@ -7,6 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @Transactional
 public class ProductService {
@@ -23,7 +27,7 @@ public class ProductService {
     }
 
     public PagedRequest<Product> findAllProducts(int pageNo) {
-        Sort sort = Sort.by("name").descending();
+        Sort sort = Sort.by("name").ascending();
 
         pageNo = pageNo <= 1 ? 0 : pageNo - 1;
 
@@ -32,32 +36,21 @@ public class ProductService {
         Page<ProductEntity> productList = productRepository.findAll(pageable);
         System.out.println("Products from Database: "+ productList.getContent());
 
-        Page<Product> productLists = productRepository.findAll(pageable)
-                .map(product -> {
-                    Product mapped = productMapper.toModel(product);
-                    System.out.println("Mapped Product: " + mapped);
-                    return mapped;
-                });
-        System.out.println("Mapped Products: " + productLists.getContent());
-        System.out.println("Total Pages: " + productLists.getTotalPages());
-        System.out.println("Total Elements: " + productLists.getTotalElements());
-        System.out.println("Page Number: " + productLists.getNumber());
-        System.out.println("Is First Page: " + productLists.isFirst());
-        System.out.println("Is Last Page: " + productLists.isLast());
-        System.out.println("Has Previous Page: " + productLists.hasPrevious());
-        System.out.println("Has Next Page: " + productLists.hasNext());
-        System.out.println("Size: " + productLists.getSize());
-
+//        Set<String> immutableProducts = new HashSet<>();
+        List<Product> distinctProducts = productList.stream()
+                .map(productMapper::toModel)
+//                .filter(product -> immutableProducts.add(product.getCode())) // Add to set and filter duplicates
+                .toList();
 
         PagedRequest<Product> pagedRequest = new PagedRequest<>(
-                productLists.getContent(),
+                distinctProducts,
                 productList.getTotalElements(),
-                productLists.getNumber() + 1,
-                productLists.getTotalPages(),
-                productLists.isFirst(),
-                productLists.hasNext(),
-                productLists.hasPrevious(),
-                productLists.isLast()
+                productList.getNumber() + 1,
+                productList.getTotalPages(),
+                productList.isFirst(),
+                productList.hasNext(),
+                productList.hasPrevious(),
+                productList.isLast()
         );
         System.out.println("PagedRequest: " + pagedRequest);
 
