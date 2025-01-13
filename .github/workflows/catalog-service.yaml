@@ -3,10 +3,10 @@ name: catalog-service
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
-      # Step 3: Cache Maven dependencies for faster builds
+      # Step 3: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -38,13 +38,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
-      # Step 4: Run "Spotless" for code formatting checks
+      # Step 4: Run code formatting checks
       - name: Lint with Spotless
-        run: mvn spotless:check
+        run: ./mvnw spotless:check
 
-      # Step 5: Build the project and run tests using Testcontainers
+      # Step 5: Build the project and run tests
       - name: Build and Test
-        run: mvn clean verify
+        run: ./mvnw clean verify
 
       # Step 6: Upload test results for visibility
       - name: Upload Test Results
@@ -52,8 +52,3 @@ jobs:
         with:
           name: Test Results
           path: target/surefire-reports/*.xml
-
-
-      - name: Build with maven
-        run: ./mvnw -ntp verify
-
