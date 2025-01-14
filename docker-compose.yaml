@@ -16,7 +16,25 @@ services:
       - db_data:/var/lib/postgresql/data  # Persist PostgreSQL data
 
 
+  catalog-service:
+    image: lorenzo1897/catalog-service:latest
+    container_name: catalog_service
+    restart: always
+    ports:
+      - "8089:8080"  # Change this port if needed
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:postgresql://db_postgres_service:5432/${POSTGRES_DB}  # Correct host (service name)
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - db
 
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      retries: 3
 
 volumes:
   db_data:
