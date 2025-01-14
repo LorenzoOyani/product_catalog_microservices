@@ -1,18 +1,18 @@
-//package org.example.catalogservice;
+// package org.example.catalogservice;
 //
-//import org.springframework.boot.test.context.TestConfiguration;
-//import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.test.context.DynamicPropertyRegistry;
-//import org.springframework.test.context.DynamicPropertySource;
-//import org.testcontainers.containers.PostgreSQLContainer;
-//import org.testcontainers.utility.DockerImageName;
-//
-//
+// import org.springframework.boot.test.context.TestConfiguration;
+// import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.testcontainers.containers.PostgreSQLContainer;
+// import org.testcontainers.utility.DockerImageName;
 //
 //
-//@TestConfiguration(proxyBeanMethods = false)
-//public class TestContainerConfig {
+//
+//
+// @TestConfiguration(proxyBeanMethods = false)
+// public class TestContainerConfig {
 //
 //    @ServiceConnection
 //    private static final PostgreSQLContainer<?> POSTGRES_CONTAINER;
@@ -36,4 +36,4 @@
 //        registry.add("spring.datasource.username", POSTGRES_CONTAINER::getUsername);
 //        registry.add("spring.datasource.password", POSTGRES_CONTAINER::getPassword);
 //    }
-//}
+// }

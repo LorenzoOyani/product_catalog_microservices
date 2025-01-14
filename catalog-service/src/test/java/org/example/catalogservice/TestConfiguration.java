@@ -8,13 +8,12 @@ import org.testcontainers.utility.DockerImageName;
 @org.springframework.boot.test.context.TestConfiguration(proxyBeanMethods = false)
 public class TestConfiguration {
 
+  static PostgreSQLContainer<?> postgreSQLContainer =
+      new PostgreSQLContainer<>(DockerImageName.parse("postgres:14"));
 
-    static PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>(DockerImageName.parse("postgres:14"));
-
-    @Bean
-    @ServiceConnection
-    PostgreSQLContainer<?> postgreSQLContainer() {
-        return postgreSQLContainer;
-    }
+  @Bean
+  @ServiceConnection
+  PostgreSQLContainer<?> postgreSQLContainer() {
+    return postgreSQLContainer;
+  }
 }
